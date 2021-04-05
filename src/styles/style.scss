@@ -1,3 +1,22 @@
+/* noto-sans-jp-regular - latin */
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('../fonts/noto-sans-jp-v28-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/noto-sans-jp-v28-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* noto-sans-jp-700 - latin */
+@font-face {
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('../fonts/noto-sans-jp-v28-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/noto-sans-jp-v28-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
 html {
   box-sizing: border-box;
 }
@@ -11,11 +30,15 @@ html {
 .wrapper {
   max-width: 1280px;
   margin: 0 auto;
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-weight: 400;
 }
 
 .films-list {
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
 }
 
 .list-item {
@@ -23,20 +46,57 @@ html {
   padding: 24px 20px;
   border-bottom: 1px solid rgba(0,0,0,0.08);
   border-radius: 15px;
-  transition: background-color 0.5s linear;
+  transition: box-shadow 0.2s linear;
 
   &:hover {
-    background-color: bisque;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: #F0F0F0;
     border-bottom: none;
   }
 }
 
 .list-item__id {
   margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.list-item__link {
+  display: flex;
+  width: 100%;
+  text-decoration: none;
+  color: #000000;
+  margin-left: 0;
 }
 
 .list-item__img {
   max-width: 90px;
   max-height: 135px;
   margin-right: 20px;
+}
+
+.list-item__text {
+  margin-right: 20px;
+  max-width: 80%;
+}
+
+.list-item__title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.list-item__description {
+  line-height: 20px;
+}
+
+.list-item__icon {
+  margin-left: auto;
+  height: 35px;
+  width: 35px;
+}
+
+.film-info {
+  display: flex;
+  margin-top: 30px;
 }
