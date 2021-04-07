@@ -1,3 +1,7 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable prefer-rest-params */
 function throttle(func, ms) {
   let isThrottled = false;
@@ -28,4 +32,11 @@ function throttle(func, ms) {
   return wrapper;
 }
 
-export default throttle;
+const isEmpty = (obj) => {
+  for (const _key in obj) {
+    return false;
+  }
+  return true;
+};
+
+export { throttle, isEmpty };

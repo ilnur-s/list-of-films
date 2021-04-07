@@ -14,8 +14,8 @@ const ListItem = ({
         <h1 className="list-item__title">{title}</h1>
         <p className="list-item__description">{description}</p>
       </div>
-      <img src={heart} alt="favorites" className="list-item__icon" />
     </Link>
+    <img src={heart} alt="favorites" className="list-item__icon" />
   </div>
 );
 

@@ -1,12 +1,13 @@
-import './styles/reset.scss';
 import './styles/style.scss';
+import './styles/reset.scss';
 
 import React from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import ListItem from './components/ListItem';
-import ItemInfo from './components/ItemInfo';
+import MoviesList from './components/MoviesList';
+import MovieInfo from './components/MovieInfo';
+import Header from './components/Header';
 import { getMovies, getGenres } from './helpers/requests';
-import throttle from './helpers/utils';
+import { throttle } from './helpers/utils';
 
 class App extends React.Component {
   constructor(props) {
@@ -50,27 +51,30 @@ class App extends React.Component {
   render() {
     const { films, genres } = this.state;
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <div className="films-list">
-              {films.map((item, index) => (
-                <ListItem
-                  itemNumber={index + 1}
-                  id={item.id}
-                  key={item.id}
-                  title={item.title}
-                  description={item.overview}
-                  imagePath={item.poster_path}
-                />
-              ))}
-            </div>
-          </Route>
-          <Route path="/movie/:id">
-            <ItemInfo films={films} genres={genres} />
-          </Route>
-        </Switch>
-      </Router>
+      <>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Header />
+              <div id="film-list" className="films-list">
+                {films.map((item, index) => (
+                  <MoviesList
+                    itemNumber={index + 1}
+                    id={item.id}
+                    key={item.id}
+                    title={item.title}
+                    description={item.overview}
+                    imagePath={item.poster_path}
+                  />
+                ))}
+              </div>
+            </Route>
+            <Route path="/movie/:id">
+              <MovieInfo films={films} genres={genres} />
+            </Route>
+          </Switch>
+        </Router>
+      </>
     );
   }
 }
