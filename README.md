@@ -1,6 +1,6 @@
-# Calculator React
+# Movies
 
-Popular Movies App
+React app for information on popular films
 
 ## Project setup
 ```

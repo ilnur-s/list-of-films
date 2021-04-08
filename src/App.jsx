@@ -4,9 +4,9 @@ import './styles/reset.scss';
 import React from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import MoviesList from './components/MoviesList';
-import MovieInfo from './components/MovieInfo';
+import MovieDetails from './components/MovieDetails';
 import Header from './components/Header';
-import { getMovies, getGenres } from './helpers/requests';
+import { getMoviesData, getGenres } from './helpers/requests';
 import { throttle } from './helpers/utils';
 
 class App extends React.Component {
@@ -16,12 +16,13 @@ class App extends React.Component {
       films: [],
       genres: [],
       page: 1,
+      isFavorites: false,
     };
   }
 
   async componentDidMount() {
     const { page } = this.state;
-    const moviesState = await getMovies(page);
+    const moviesState = await getMoviesData(page);
     const genresState = await getGenres();
     this.setState({ films: moviesState.results, genres: genresState.genres });
     window.addEventListener('scroll', throttle(this.handleDownloadList, 1000));
@@ -39,7 +40,7 @@ class App extends React.Component {
     if (windowRelativeBottom < document.documentElement.clientHeight + 100) {
       const nextPage = page + 1;
       const currentState = films;
-      const newList = await getMovies(nextPage);
+      const newList = await getMoviesData(nextPage);
       currentState.push(...newList.results);
       this.setState({
         films: currentState,
@@ -48,29 +49,48 @@ class App extends React.Component {
     }
   };
 
+  filteringMovies = (films) => films.filter((film) => (film.isFavorite));
+
+  addOrDeleteToFavourites = (movie) => {
+    const { films } = this.state;
+    const index = films.indexOf(movie);
+    const selectedMovieItem = films[index];
+    if (selectedMovieItem.isFavorite) {
+      selectedMovieItem.isFavorite = false;
+    } else {
+      selectedMovieItem.isFavorite = true;
+    }
+    const newState = films.map((film, i) => (i === index ? selectedMovieItem : film));
+    this.setState({ films: newState });
+  }
+
+  openOrCloseFavorites = () => {
+    const { isFavorites } = this.state;
+    this.setState({ isFavorites: !isFavorites });
+  }
+
   render() {
-    const { films, genres } = this.state;
+    const {
+      films, genres, isFavorites,
+    } = this.state;
+    console.log(genres);
     return (
       <>
         <Router>
+          <Header openOrCloseFavorites={this.openOrCloseFavorites} isFavorites={isFavorites} />
           <Switch>
             <Route exact path="/">
-              <Header />
-              <div id="film-list" className="films-list">
-                {films.map((item, index) => (
+              <main className="films-list">
+                <div className="wrapper">
                   <MoviesList
-                    itemNumber={index + 1}
-                    id={item.id}
-                    key={item.id}
-                    title={item.title}
-                    description={item.overview}
-                    imagePath={item.poster_path}
+                    movies={isFavorites ? this.filteringMovies(films) : films}
+                    addOrDeleteToFavourites={this.addOrDeleteToFavourites}
                   />
-                ))}
-              </div>
+                </div>
+              </main>
             </Route>
             <Route path="/movie/:id">
-              <MovieInfo films={films} genres={genres} />
+              <MovieDetails />
             </Route>
           </Switch>
         </Router>

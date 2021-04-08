@@ -1,19 +1,19 @@
 /* eslint-disable no-alert */
-const getMovies = async (pageNumber) => {
-  let movies;
+const getMoviesData = async (pageNumber) => {
+  let moviesData;
   try {
     const endpoint = `https://api.themoviedb.org/3/discover/movie?api_key=4237669ebd35e8010beee2f55fd45546&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${pageNumber}`;
-    const rawDataMovies = await fetch(endpoint);
+    const rawMoviesData = await fetch(endpoint);
 
-    if (rawDataMovies.ok) {
-      movies = await rawDataMovies.json();
+    if (rawMoviesData.ok) {
+      moviesData = await rawMoviesData.json();
     } else {
-      throw new Error('Ошибка получения данных, попробуйте позднее');
+      throw new Error('Ошибка получения данных, попробуйте обновить страницу');
     }
   } catch (error) {
     alert(error.message);
   }
-  return movies;
+  return moviesData;
 };
 
 const getGenres = async () => {
@@ -25,7 +25,7 @@ const getGenres = async () => {
     if (rawDataGenres.ok) {
       genres = await rawDataGenres.json();
     } else {
-      throw new Error('Ошибка получения данных, попробуйте позднее');
+      throw new Error('Ошибка получения данных, попробуйте обновить страницу');
     }
   } catch (error) {
     alert(error.message);
@@ -33,21 +33,21 @@ const getGenres = async () => {
   return genres;
 };
 
-const getMovieInfo = async (id) => {
-  let movieInfo;
+const getMovieDetails = async (id) => {
+  let movieDetails;
   try {
     const endpoint = `https://api.themoviedb.org/3/movie/${id}?api_key=4237669ebd35e8010beee2f55fd45546&language=en-US`;
-    const rawDataMovieInfo = await fetch(endpoint);
+    const rawMovieDetailsData = await fetch(endpoint);
 
-    if (rawDataMovieInfo.ok) {
-      movieInfo = await rawDataMovieInfo.json();
+    if (rawMovieDetailsData.ok) {
+      movieDetails = await rawMovieDetailsData.json();
     } else {
-      throw new Error('Ошибка получения данных, попробуйте позднее');
+      throw new Error('Ошибка получения данных, попробуйте обновить страницу');
     }
   } catch (error) {
     alert(error.message);
   }
-  return movieInfo;
+  return movieDetails;
 };
 
-export { getMovies, getGenres, getMovieInfo };
+export { getMoviesData, getGenres, getMovieDetails };

@@ -44,24 +44,46 @@ html {
   z-index: 1;
 }
 
+
 .header__wrapper {
   display: flex;
-  flex-wrap: wrap;
-  align-items:center;
-  justify-content: space-between;
-  padding: 10px 0;
+  width: 100%;
+  align-items: center;
+  padding: 10px;
 }
 
-.header__logo-link {
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 1.2;
-  color: #0B132A; 
-}
-
-.header__logo-pic {
+.header__logo {
   max-height: 50px;
+}
+
+.header__container {
+  max-width: 1050px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-button__icon {
+  margin-right: 10px;
+  height: 16px;
+  width: 16px;
+}
+
+.header-button__icon-red {
+  margin-right: 10px;
+  height: 16px;
+  width: 16px;
+  fill: #ff0000;
+}
+
+.favorites-button {
+  border: none;
+  border-radius: 10px;
+  padding: 13px 45px;
+  background-color: rgb(206, 206, 206);
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .films-list {
@@ -124,9 +146,16 @@ html {
   width: 35px;
 }
 
+.list-item__icon-red {
+  margin-left: auto;
+  height: 35px;
+  width: 35px;
+  fill: #ff0000;
+}
+
 .movie-info {
   display: flex;
-  padding-top: 30px;
+  padding-top: 90px;
   height: 100vh;
   width: 100%;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);;

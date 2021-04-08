@@ -1,62 +1,63 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMovieInfo } from '../helpers/requests';
+import { getMovieDetails } from '../helpers/requests';
 import { isEmpty } from '../helpers/utils';
 
-const MovieInfo = () => {
+const MovieDetails = () => {
   const { id } = useParams();
-  const [movieInfo, setMovieInfo] = useState({});
+  const [movieDetails, setMovieDetails] = useState({});
 
   useEffect(async () => {
-    const data = await getMovieInfo(id);
-    setMovieInfo(data);
+    const data = await getMovieDetails(id);
+    setMovieDetails(data);
   }, []);
 
   return (
-    <>
-      { !isEmpty(movieInfo)
+    <div className="wrapper">
+      { !isEmpty(movieDetails)
     && (
     <div className="movie-info">
-      <img src={`https://image.tmdb.org/t/p/w200${movieInfo.poster_path}`} alt={movieInfo.title} className="movie-info__img" />
+      <img src={`https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`} alt={movieDetails.title} className="movie-info__img" />
       <div className="movie-info__text">
-        <h1 className="movie-info__title">{movieInfo.title}</h1>
-        <p className="movie-info__description">{movieInfo.overview}</p>
+        <h1 className="movie-info__title">{movieDetails.title}</h1>
+        <p className="movie-info__description">{movieDetails.overview}</p>
         <h2 className="movie-info__subtitle">About the movie:</h2>
         <ul className="movie-info__about about-movie">
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Release date: </h3>
-            <p className="about-movie__item-value">{movieInfo.release_date}</p>
+            <p className="about-movie__item-value">{movieDetails.release_date}</p>
           </li>
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Country: </h3>
-            {movieInfo.production_countries.map((item) => (
-              <p className="about-movie__item-value">{item.name}</p>
+            {movieDetails.production_countries.map((item, index) => (
+              <p key={index} className="about-movie__item-value">{` ${item.name}`}</p>
             ))}
           </li>
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Genre: </h3>
-            {movieInfo.genres.map((item) => (
-              <p className="about-movie__item-value">{` ${item.name}`}</p>
+            {movieDetails.genres.map((item, index) => (
+              <p key={index} className="about-movie__item-value">{` ${item.name}`}</p>
             ))}
           </li>
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Runtime: </h3>
-            <p className="about-movie__item-value">{`${movieInfo.runtime} min`}</p>
+            <p className="about-movie__item-value">{`${movieDetails.runtime} min`}</p>
           </li>
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Vote average: </h3>
-            <p className="about-movie__item-value">{movieInfo.vote_average}</p>
+            <p className="about-movie__item-value">{movieDetails.vote_average}</p>
           </li>
           <li className="about-movie__item">
             <h3 className="about-movie__item-title">Vote count: </h3>
-            <p className="about-movie__item-value">{movieInfo.vote_count}</p>
+            <p className="about-movie__item-value">{movieDetails.vote_count}</p>
           </li>
         </ul>
       </div>
     </div>
     )}
-    </>
+    </div>
   );
 };
 
-export default MovieInfo;
+export default MovieDetails;
