@@ -1,8 +1,8 @@
 /* eslint-disable no-alert */
-const getMoviesData = async (pageNumber) => {
+const getMoviesData = async (pageNumber, sorting, filtering) => {
   let moviesData;
   try {
-    const endpoint = `https://api.themoviedb.org/3/discover/movie?api_key=4237669ebd35e8010beee2f55fd45546&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${pageNumber}`;
+    const endpoint = `https://api.themoviedb.org/3/discover/movie?api_key=4237669ebd35e8010beee2f55fd45546&language=en-US&sort_by=${sorting}.desc&include_adult=false&include_video=false&page=${pageNumber}&with_genres=${filtering}`;
     const rawMoviesData = await fetch(endpoint);
 
     if (rawMoviesData.ok) {
@@ -30,7 +30,7 @@ const getGenres = async () => {
   } catch (error) {
     alert(error.message);
   }
-  return genres;
+  return genres.genres.map((genre) => ({ ...genre, checked: false }));
 };
 
 const getMovieDetails = async (id) => {

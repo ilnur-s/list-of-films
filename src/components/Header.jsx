@@ -28,7 +28,7 @@ const Header = ({ openOrCloseFavorites, isFavorites }) => (
 );
 
 Header.propTypes = {
-  openOrCloseFavorites: PropTypes.arrayOf(PropTypes.object),
+  openOrCloseFavorites: PropTypes.func,
   isFavorites: PropTypes.bool,
 };
 

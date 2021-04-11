@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieDetails } from '../helpers/requests';
 import { isEmpty } from '../helpers/utils';
+import defaultPoster from '../img/default-poster.jpg';
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const MovieDetails = () => {
       { !isEmpty(movieDetails)
     && (
     <div className="movie-info">
-      <img src={`https://image.tmdb.org/t/p/w200${movieDetails.poster_path}`} alt={movieDetails.title} className="movie-info__img" />
+      <img src={movieDetails.poster_path ? `https://image.tmdb.org/t/p/w200${movieDetails.poster_path}` : defaultPoster} alt={movieDetails.title} className="movie-info__img" />
       <div className="movie-info__text">
         <h1 className="movie-info__title">{movieDetails.title}</h1>
         <p className="movie-info__description">{movieDetails.overview}</p>
