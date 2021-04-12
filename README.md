@@ -1,6 +1,7 @@
 # Movies
 
 React app for information on popular films
+
 Demo: https://movies-page-delta.vercel.app (Accessible only from under VPN)
 
 ## Project setup
