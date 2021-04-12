@@ -13,9 +13,11 @@ const getMoviesData = async (pageNumber, sorting, filtering) => {
   } catch (error) {
     alert(error.message);
   }
+
   const normalizeMoviesData = moviesData.results.map((movie) => (
     { ...movie, isFavorite: false }
   ));
+
   const favorites = JSON.parse(localStorage.getItem('favorites'));
   if (favorites) {
     const favoritesId = favorites.map((favorite) => favorite.id);
@@ -24,6 +26,7 @@ const getMoviesData = async (pageNumber, sorting, filtering) => {
       : movie));
     return results;
   }
+
   localStorage.setItem('favorites', JSON.stringify([]));
   return normalizeMoviesData;
 };
