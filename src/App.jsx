@@ -18,6 +18,7 @@ class App extends React.Component {
       genres: [],
       page: 1,
       isFavorites: false,
+      favoritesFilms: [],
       sorting: 'popularity',
       filtering: '',
     };
@@ -27,7 +28,7 @@ class App extends React.Component {
     const { page, sorting, filtering } = this.state;
     const moviesState = await getMoviesData(page, sorting, filtering);
     const genresState = await getGenres();
-    this.setState({ films: moviesState.results, genres: genresState });
+    this.setState({ films: moviesState, genres: genresState });
     window.addEventListener('scroll', throttle(this.handleDownloadList, 1000));
   }
 
@@ -46,11 +47,8 @@ class App extends React.Component {
       const nextPage = page + 1;
       const currentState = films;
       const newList = await getMoviesData(nextPage, sorting, filtering);
-      currentState.push(...newList.results);
-      this.setState({
-        films: currentState,
-        page: nextPage,
-      });
+      currentState.push(...newList);
+      this.setState({ films: currentState, page: nextPage });
     }
   };
 
@@ -58,27 +56,39 @@ class App extends React.Component {
 
   addOrDeleteToFavourites = (movie) => {
     const { films } = this.state;
-    const index = films.indexOf(movie);
-    const selectedMovieItem = films[index];
+    const favorites = JSON.parse(localStorage.getItem('favorites'));
+    const favoritesId = favorites.map((favorite) => favorite.id);
+    const selectedMovieItem = movie;
     if (selectedMovieItem.isFavorite) {
       selectedMovieItem.isFavorite = false;
+      const selectedMovieIndex = favoritesId.indexOf(selectedMovieItem.id);
+      favorites.splice(selectedMovieIndex, 1);
+      this.setState({ favoritesFilms: favorites });
     } else {
       selectedMovieItem.isFavorite = true;
+      favorites.push(selectedMovieItem);
+      this.setState({ favoritesFilms: favorites });
     }
-    const newState = films.map((film, i) => (i === index ? selectedMovieItem : film));
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    const newState = films.map((film) => (film.id === selectedMovieItem.id
+      ? { ...film, isFavorite: selectedMovieItem.isFavorite }
+      : film));
     this.setState({ films: newState });
   }
 
   openOrCloseFavorites = () => {
     const { isFavorites } = this.state;
-    this.setState({ isFavorites: !isFavorites });
+    this.setState({
+      isFavorites: !isFavorites,
+      favoritesFilms: JSON.parse(localStorage.getItem('favorites')),
+    });
   }
 
   sortBy = async (e) => {
     const { filtering } = this.state;
     this.setState({ sorting: e.target.value, page: 1 });
     const newList = await getMoviesData(1, e.target.value, filtering);
-    this.setState({ films: newList.results });
+    this.setState({ films: newList });
   }
 
   filterByGenre = async (e) => {
@@ -96,12 +106,12 @@ class App extends React.Component {
     }
     this.setState({ filtering: newFilter.join(), page: 1 });
     const newList = await getMoviesData(1, sorting, newFilter.join());
-    this.setState({ films: newList.results, genres: newGenres });
+    this.setState({ films: newList, genres: newGenres });
   };
 
   render() {
     const {
-      films, genres, isFavorites, sorting,
+      films, genres, isFavorites, sorting, favoritesFilms,
     } = this.state;
     return (
       <>
@@ -116,9 +126,9 @@ class App extends React.Component {
                     <SortingForm sorting={sorting} sortBy={this.sortBy} />
                   </>
                 )}
-                <main className="films-list">
+                <main className={isFavorites ? 'films-favorites' : 'films-list'}>
                   <MoviesList
-                    movies={isFavorites ? this.filteringMovies(films) : films}
+                    movies={isFavorites ? favoritesFilms : films}
                     addOrDeleteToFavourites={this.addOrDeleteToFavourites}
                   />
                 </main>

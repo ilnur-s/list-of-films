@@ -197,6 +197,12 @@ html {
   flex-direction: column;
 }
 
+.films-favorites {
+  display: flex;
+  flex-direction: column;
+  margin-top: 85px;
+}
+
 .list-item {
   display: flex;
   padding: 24px 20px;

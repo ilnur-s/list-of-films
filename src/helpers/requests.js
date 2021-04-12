@@ -13,7 +13,19 @@ const getMoviesData = async (pageNumber, sorting, filtering) => {
   } catch (error) {
     alert(error.message);
   }
-  return moviesData;
+  const normalizeMoviesData = moviesData.results.map((movie) => (
+    { ...movie, isFavorite: false }
+  ));
+  const favorites = JSON.parse(localStorage.getItem('favorites'));
+  if (favorites) {
+    const favoritesId = favorites.map((favorite) => favorite.id);
+    const results = normalizeMoviesData.map((movie) => (favoritesId.includes(movie.id)
+      ? { ...movie, isFavorite: true }
+      : movie));
+    return results;
+  }
+  localStorage.setItem('favorites', JSON.stringify([]));
+  return normalizeMoviesData;
 };
 
 const getGenres = async () => {
