@@ -43,7 +43,7 @@ class App extends React.Component {
     const {
       films, page, sorting, filtering,
     } = this.state;
-    if (windowRelativeBottom < document.documentElement.clientHeight + 100) {
+    if (windowRelativeBottom < document.documentElement.clientHeight + 500) {
       const nextPage = page + 1;
       const currentState = films;
       const newList = await getMoviesData(nextPage, sorting, filtering);
