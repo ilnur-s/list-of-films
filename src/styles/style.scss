@@ -252,16 +252,19 @@ html {
   line-height: 20px;
 }
 
-.list-item__icon {
+%list-item-icon-base {
   margin-left: auto;
   height: 35px;
   width: 35px;
+  cursor: pointer;
+}
+
+.list-item__icon {
+  @extend %list-item-icon-base;
 }
 
 .list-item__icon-red {
-  margin-left: auto;
-  height: 35px;
-  width: 35px;
+  @extend %list-item-icon-base;
   fill: #ff0000;
 }
 
